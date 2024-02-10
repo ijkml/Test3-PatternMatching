@@ -17,10 +17,22 @@ function solution(text, patt) {
   const pattLen = patt.length; // length of pattern
   const textLen = text.length; // length of text
 
-  /**
-   * @param {number} pid location on the pattern tree
-   */
-  function doesMatch(pid) {
+  const lastSearchable = (() => {
+    const lastWild = patt.lastIndexOf("*");
+    const moat = pattLen - 1 - lastWild; // length of pattern after last wild
+    const diff = moat - textLen;
+
+    if (diff < 0) {
+      return lastWild;
+    }
+
+    return lastWild + diff + 2;
+  })();
+
+  let pid = 0; // current location on the pattern tree
+  let result = false;
+
+  while (pid <= lastSearchable) {
     let tloc = 0; // temp location on the text tree
     let tpid = pid; // temp location on patt tree
 
@@ -50,27 +62,6 @@ function solution(text, patt) {
       matches = false;
       break;
     }
-
-    return matches;
-  }
-
-  const lastSearchable = (() => {
-    const lastWild = patt.lastIndexOf("*");
-    const moat = pattLen - 1 - lastWild; // length of pattern after last wild
-    const diff = moat - textLen;
-
-    if (diff < 0) {
-      return lastWild;
-    }
-
-    return lastWild + diff + 2;
-  })();
-
-  let pid = 0; // current location on the pattern tree
-  let result = false;
-
-  while (pid <= lastSearchable) {
-    const matches = doesMatch(pid);
 
     if (matches) {
       result = true;
