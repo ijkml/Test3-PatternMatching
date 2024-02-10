@@ -1,4 +1,4 @@
-# Turing Test (Rabbit-V)
+# Pattern Matching
 
 Given a string text and a pattern. Evaluate if a given text string matches a specified pattern, utilizing special characters for pattern matching.
 

@@ -1,4 +1,5 @@
 /**
+ * Brute-tracking
  * @param {string} text
  * @param {string} patt
  */
@@ -9,7 +10,7 @@ function solution(text, patt) {
   }
 
   if (!(patt.includes(".") || patt.includes("*"))) {
-    // has no special chars, return early
+    // has no special char, return early
     return patt.indexOf(text) >= 0;
   }
 
@@ -20,26 +21,8 @@ function solution(text, patt) {
    * @param {number} pid location on the pattern tree
    */
   function doesMatch(pid) {
-    let tloc = 0; // temporal location on the text tree
-    let tpid = pid;
-
-    /**
-     *
-     * @param {'text' | 'patt'} only
-     */
-    function next(only) {
-      if (only === "text") {
-        tloc += 1;
-        return;
-      }
-      if (only === "patt") {
-        tpid += 1;
-        return;
-      }
-
-      tloc += 1;
-      tpid += 1;
-    }
+    let tloc = 0; // temp location on the text tree
+    let tpid = pid; // temp location on patt tree
 
     let matches = true; // so far still matching
 
@@ -48,17 +31,19 @@ function solution(text, patt) {
       const p = patt[tpid]; // patt char at temporal loc
 
       if (t === p || p === ".") {
-        next();
+        // move along both text and pattern
+        tloc += 1;
+        tpid += 1;
         continue;
       }
 
       if (p === "*") {
         if (patt[tpid - 1] === t) {
-          next("text");
+          tloc += 1; // next text char
           continue;
         }
 
-        next("patt");
+        tpid += 1; // next patt char
         continue;
       }
 
@@ -70,7 +55,7 @@ function solution(text, patt) {
   }
 
   const lastSearchable = (() => {
-    const lastWild = patt.lastIndexOf('*');
+    const lastWild = patt.lastIndexOf("*");
     const moat = pattLen - 1 - lastWild; // length of pattern after last wild
     const diff = moat - textLen;
 
@@ -92,8 +77,7 @@ function solution(text, patt) {
       break;
     }
 
-    // next loop
-    pid++;
+    pid++; // next loop
   }
 
   return result;

@@ -1,7 +1,7 @@
 import solution from "./solution.mjs";
 
 /**
- * @type [string, string, boolean][]
+ * @type [text: string, pattern: string, expect: boolean][]
  */
 const testcases = [
   ["abc", "a***abc", true],
@@ -33,3 +33,8 @@ testcases.forEach((tc) => {
     console.log("\u001b[31m x Failed \u001b[0m");
   }
 });
+
+/* 
+  * HOW TO RUN:
+  > node run.mjs
+*/
